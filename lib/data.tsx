@@ -29,7 +29,11 @@ export async function getPharmacyIds() {
 
 export async function getPharmacies() {
   const res = await fetch("https://assets.nimblerx.com/interviews/pharmacies");
-  return res.json();
+  const pharmaciesData = res.json();
+
+  const [pharmacies] = await Promise.all([pharmaciesData]);
+
+  return pharmacies;
 }
 export async function getMedications() {
   const res = await fetch("https://assets.nimblerx.com/interviews/medications");
