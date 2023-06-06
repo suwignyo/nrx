@@ -37,5 +37,8 @@ export async function getPharmacies() {
 }
 export async function getMedications() {
   const res = await fetch("https://assets.nimblerx.com/interviews/medications");
-  return res.json();
+  const medicationsData = res.json();
+  const [medication] = await Promise.all([medicationsData]);
+
+  return medication;
 }
