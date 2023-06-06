@@ -1,12 +1,16 @@
-import { getMedications, getPharmacyIds } from "@/lib/data";
+"use client";
+import { useGlobalContext } from "@/context/store";
 import { useState } from "react";
 
-export default function Index({ medications }) {
+const Medications = ({ medications, pharmacyId }) => {
   const [selectedMedications, setSelectedMedications] = useState([]);
 
   const onOptionChangeHandler = (event) => {
     setSelectedMedications([...selectedMedications, event.target.value]);
   };
+
+  const { setOrders, orders } = useGlobalContext();
+
   return (
     <div>
       {selectedMedications.map((medication) => (
@@ -17,25 +21,17 @@ export default function Index({ medications }) {
           return <option key={med}>{med}</option>;
         })}
       </select>
+      <button
+        onClick={() =>
+          setOrders([
+            { medications: selectedMedications, pharmacyId: pharmacyId },
+          ])
+        }
+      >
+        Order
+      </button>
     </div>
   );
-}
+};
 
-export async function getStaticPaths() {
-  const paths = await getPharmacyIds();
-  return {
-    paths,
-    fallback: false,
-  };
-}
-
-export async function getStaticProps({ params }) {
-  const data = await getMedications();
-  const { pharmacies } = data;
-
-  return {
-    props: {
-      medications: pharmacies,
-    },
-  };
-}
+export default Medications;

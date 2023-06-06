@@ -1,15 +1,9 @@
 import Pharmacies from "@/components/Pharmacies";
 import { getPharmacies, getPharmacyDetails } from "@/lib/data";
 
-export default function Index({ pharmacies }) {
-  return <Pharmacies pharmacies={pharmacies} />;
-}
-
-export async function getStaticProps({ params }) {
+export default async function Page() {
   const data = await getPharmacies();
   const { pharmacies } = data;
-
-  // get the details of each pharmacy and resolve all into an array
   const getDetails = async () => {
     return await Promise.all(
       pharmacies.map(async (pharmacy) => {
@@ -29,9 +23,5 @@ export async function getStaticProps({ params }) {
     return { ...pharmacy, ...details };
   });
 
-  return {
-    props: {
-      pharmacies: mergedPharmacyDetails,
-    },
-  };
+  return <Pharmacies pharmacies={mergedPharmacyDetails} />;
 }
