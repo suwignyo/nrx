@@ -5,7 +5,8 @@ import { point } from "@turf/helpers";
 import distance from "@turf/distance";
 import { useGlobalContext } from "@/context/store";
 import { useRouter } from "next/navigation";
-
+import correct from "../public/correct.png";
+import Image from "next/image";
 type IPharmacy = {
   name: string;
   pharmacyId: string;
@@ -73,7 +74,9 @@ export default function Pharmacies({ pharmacies }: IPharmacies) {
 
                   {!!order && (
                     <div className="card-actions justify-end">
-                      <div className="badge badge-warning">in progress</div>
+                      <div className="w-8 h8 rounded">
+                        <Image src={correct} alt="checkmark" />
+                      </div>
                     </div>
                   )}
                 </div>
