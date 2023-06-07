@@ -19,8 +19,8 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <GlobalContextProvider>
-          <main className="flex min-h-screen flex-col items-center justify-between p-24">
-            <nav className="p-4">
+          <main className="flex min-h-screen flex-col p-24">
+            <nav className="flex justify-end p-4">
               <Link href="/">Home</Link>
             </nav>
             {children}

@@ -29,7 +29,6 @@ const GlobalContext = createContext<ContextProps>({
 export const GlobalContextProvider = ({ children }) => {
   const [orders, setOrders] = useState<[] | Meds[]>([]);
 
-  console.log("orders", orders);
   return (
     <GlobalContext.Provider value={{ orders, setOrders }}>
       {children}
