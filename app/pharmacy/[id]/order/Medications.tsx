@@ -1,8 +1,9 @@
 "use client";
 import { useGlobalContext } from "@/context/store";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-
+import remove from "../../../../public//remove.png";
 interface IMedications {
   medications: string[];
   pharmacyId: string;
@@ -16,11 +17,17 @@ const Medications = ({ medications, pharmacyId }: IMedications) => {
     setSelectedMedications([...selectedMedications, event.target.value]);
   };
 
-  const { setOrders, orders } = useGlobalContext();
+  const onRemoveMedication = (item: string) => {
+    setSelectedMedications(
+      selectedMedications.filter((medication) => medication !== item)
+    );
+  };
+
+  const { setOrders } = useGlobalContext();
 
   return (
     <div className="">
-      <div className="">
+      <div className="w-96">
         <select
           onChange={(e) => onOptionChangeHandler(e)}
           className="select w-full max-w-xs"
@@ -33,29 +40,48 @@ const Medications = ({ medications, pharmacyId }: IMedications) => {
           })}
         </select>
       </div>
-      <div className="overflow-x-auto h-96">
+      <div className="overflow-x-auto h-96 w-48">
         <table className="table table-pin-rows">
           <tbody>
             {selectedMedications.map((medication) => (
               <tr key={medication}>
                 <td>{medication}</td>
+                <td>
+                  <div className="w-4 h-4 rounded">
+                    <Image
+                      src={remove}
+                      alt="checkmark"
+                      onClick={() => onRemoveMedication(medication)}
+                    />
+                  </div>
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-      <button
-        className="btn btn-primary"
-        onClick={() => {
-          setOrders((prevState) => [
-            ...prevState,
-            { medications: selectedMedications, pharmacyId: pharmacyId },
-          ]);
-          router.push("/");
-        }}
+      <div
+        className={`${selectedMedications.length === 0 && "tooltip"}`}
+        data-tip={`${
+          selectedMedications.length === 0 &&
+          "Please select at least one medication"
+        }`}
       >
-        Order
-      </button>
+        <button
+          className="btn btn-primary"
+          onClick={() => {
+            if (selectedMedications.length > 0) {
+              setOrders((prevState) => [
+                ...prevState,
+                { medications: selectedMedications, pharmacyId: pharmacyId },
+              ]);
+              router.push("/");
+            }
+          }}
+        >
+          Order
+        </button>
+      </div>
     </div>
   );
 };
